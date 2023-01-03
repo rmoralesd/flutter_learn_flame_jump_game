@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_learn_flame_jump_game/routes.dart';
 
 class LessonMenu extends StatelessWidget {
   const LessonMenu({super.key});
@@ -15,7 +16,7 @@ class LessonMenu extends StatelessWidget {
             SizedBox(
               height: 32,
             ),
-            ButtonItem(title: 'Lesson 1', route: '')
+            ButtonItem(title: 'Lesson 1', route: Routes.lesson01)
           ],
         ),
       )),
