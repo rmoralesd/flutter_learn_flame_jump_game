@@ -13,16 +13,23 @@ final screenSize = Vector2(1280, 720);
 class MyGame extends Forge2DGame with KeyboardEvents {
   MyGame() : super(zoom: 100, gravity: Vector2(0, 15));
 
+  final totalBodies = TextComponent(position: Vector2(5, 690))
+    ..positionType = PositionType.viewport;
+
+  final fps = FpsTextComponent(position: Vector2(5, 665));
+
   @override
   Future<void> onLoad() async {
     camera.viewport = FixedResolutionViewport(screenSize);
     add(_Background(size: screenSize)..positionType = PositionType.viewport);
+    add(fps);
+    add(totalBodies);
   }
 
   @override
-  KeyEventResult onKeyEvent(RawKeyEvent event, Set keyPressed) {
+  KeyEventResult onKeyEvent(RawKeyEvent event, Set keysPressed) {
     if (event is RawKeyDownEvent) {
-      if (keyPressed.contains(LogicalKeyboardKey.escape)) {
+      if (keysPressed.contains(LogicalKeyboardKey.escape)) {
         navigatorKey.currentState
             ?.pushNamedAndRemoveUntil(Routes.menu, (route) => false);
         return KeyEventResult.handled;
@@ -35,6 +42,12 @@ class MyGame extends Forge2DGame with KeyboardEvents {
   Color backgroundColor() {
     return Colors.red;
   }
+
+  @override
+  void update(double dt) {
+    super.update(dt);
+    totalBodies.text = 'Bodies: ${world.bodies.length}';
+  }
 }
 
 class _Background extends PositionComponent {
@@ -43,5 +56,34 @@ class _Background extends PositionComponent {
   void render(Canvas canvas) {
     canvas.drawRect(
         Rect.fromLTWH(0, 0, size.x, size.y), BasicPalette.black.paint());
+  }
+}
+
+class MyGameWidget extends StatelessWidget {
+  final MyGame game;
+  const MyGameWidget({
+    super.key,
+    required this.game,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        shadowColor: Colors.transparent,
+        leading: IconButton(
+          onPressed: () {
+            navigatorKey.currentState
+                ?.pushNamedAndRemoveUntil(Routes.menu, (route) => false);
+          },
+          icon: const Icon(Icons.arrow_back),
+        ),
+      ),
+      body: GameWidget(
+        game: game,
+      ),
+    );
   }
 }
