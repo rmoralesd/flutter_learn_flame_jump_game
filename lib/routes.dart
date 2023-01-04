@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_learn_flame_jump_game/lesson_01/game_lesson_01.dart';
 import 'package:flutter_learn_flame_jump_game/lesson_menu.dart';
 import 'package:flutter_learn_flame_jump_game/my_game.dart';
 
@@ -15,7 +16,7 @@ class Routes {
       case menu:
         return buildRoute(const LessonMenu());
       case lesson01:
-        return buildRoute(MyGameWidget(game: MyGame()));
+        return buildRoute(MyGameWidget(game: GameLesson01()));
       default:
         throw Exception('Route does not exists');
     }
