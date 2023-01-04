@@ -16,7 +16,8 @@ class LessonMenu extends StatelessWidget {
             SizedBox(
               height: 32,
             ),
-            ButtonItem(title: 'Lesson 1', route: Routes.lesson01)
+            ButtonItem(title: 'Lesson 1', route: Routes.lesson01),
+            ButtonItem(title: 'Lesson 2', route: Routes.lesson02)
           ],
         ),
       )),
@@ -50,7 +51,7 @@ class ButtonItem extends StatelessWidget {
         ),
         const SizedBox(
           height: 5.0,
-        )
+        ),
       ],
     );
   }
