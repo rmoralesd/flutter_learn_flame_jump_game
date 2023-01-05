@@ -17,7 +17,8 @@ class LessonMenu extends StatelessWidget {
               height: 32,
             ),
             ButtonItem(title: 'Lesson 1', route: Routes.lesson01),
-            ButtonItem(title: 'Lesson 2', route: Routes.lesson02)
+            ButtonItem(title: 'Lesson 2', route: Routes.lesson02),
+            ButtonItem(title: 'Lesson 3', route: Routes.lesson03)
           ],
         ),
       )),
