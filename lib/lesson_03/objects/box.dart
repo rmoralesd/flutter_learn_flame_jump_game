@@ -4,7 +4,7 @@ class Box extends BodyComponent {
   @override
   Body createBody() {
     final bodyDef = BodyDef(
-      position: Vector2(10, 0),
+      position: Vector2(7.5, 0),
       type: BodyType.dynamic,
     );
 

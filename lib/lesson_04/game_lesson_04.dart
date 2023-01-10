@@ -5,7 +5,7 @@ import 'package:flutter_learn_flame_jump_game/lesson_04/objects/floor.dart';
 import 'package:flutter_learn_flame_jump_game/my_game.dart';
 
 class GameLesson04 extends MyGame with TapDetector {
-  final balls = [(Ball(1)), (Ball(5)), (Ball(8))];
+  final balls = [(Ball(1)), (Ball(4)), (Ball(7))];
   final speed = Vector2(0, -9);
   @override
   Future<void> onLoad() async {

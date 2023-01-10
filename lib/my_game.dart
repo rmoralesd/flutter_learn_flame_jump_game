@@ -8,10 +8,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_learn_flame_jump_game/main.dart';
 import 'package:flutter_learn_flame_jump_game/routes.dart';
 
-final screenSize = Vector2(1280, 720);
+final screenSize = Vector2(810, 1440);
 
 // Scaled viewport size
-final worldSize = Vector2(12.8, 7.2);
+final worldSize = Vector2(8.1, 14.4);
 
 class MyGame extends Forge2DGame with KeyboardEvents {
   MyGame() : super(zoom: 100, gravity: Vector2(0, 15));
