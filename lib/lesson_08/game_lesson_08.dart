@@ -22,6 +22,15 @@ class GameLesson08 extends MyGame {
         robot.jump();
       }
     }
+
+    if (keysPressed.contains(LogicalKeyboardKey.keyA)) {
+      //Esto se dispara si la tecla A se mantiene presionada
+      robot.walkLeft();
+    } else if (keysPressed.contains(LogicalKeyboardKey.keyD)) {
+      robot.walkRight();
+    } else {
+      robot.walkStop();
+    }
     return KeyEventResult.handled;
   }
 }

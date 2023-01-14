@@ -2,11 +2,7 @@ import 'package:flame/components.dart';
 import 'package:flame_forge2d/flame_forge2d.dart';
 import 'package:flutter_learn_flame_jump_game/my_game.dart';
 
-enum RobotState {
-  idle,
-  jump,
-  fall,
-}
+enum RobotState { idle, jump, fall, walk }
 
 class Robot extends BodyComponent {
   final _size = Vector2(1.80, 2.4);
@@ -16,8 +12,19 @@ class Robot extends BodyComponent {
   late final SpriteComponent idleComponent;
   late final SpriteComponent jumpComponent;
   late final SpriteComponent fallComponent;
+  late final SpriteAnimationComponent walkComponent;
 
   late Component currentComponent;
+
+  int accelerationX = 0;
+
+  Future<List<Sprite>> _loadSprites(String baseName, int n) async {
+    final List<Sprite> listOfsprites = [];
+    for (int i = 0; i <= n; i++) {
+      listOfsprites.add(await gameRef.loadSprite('robot/$baseName$i.png'));
+    }
+    return listOfsprites;
+  }
 
   @override
   Future<void> onLoad() async {
@@ -25,6 +32,7 @@ class Robot extends BodyComponent {
     final idle = await gameRef.loadSprite('robot/robot_idle.png');
     final jump = await gameRef.loadSprite('robot/robot_jump.png');
     final fall = await gameRef.loadSprite('robot/robot_fall.png');
+    final walk = await _loadSprites('robot_walk', 7);
 
     idleComponent = SpriteComponent(
       sprite: idle,
@@ -47,16 +55,48 @@ class Robot extends BodyComponent {
       anchor: Anchor.center,
     );
 
+    final walkAnimation =
+        SpriteAnimation.spriteList(walk, stepTime: 0.05, loop: true);
+
+    walkComponent = SpriteAnimationComponent(
+      animation: walkAnimation,
+      anchor: Anchor.center,
+      position: _componentPosition,
+      size: _size,
+      removeOnFinish: false,
+    );
+
     currentComponent = idleComponent;
 
     add(idleComponent);
   }
 
   void _setComponent(PositionComponent component) {
+    if (accelerationX < 0) {
+      if (!component.isFlippedHorizontally) {
+        component.flipHorizontally();
+      }
+    } else {
+      if (component.isFlippedHorizontally) {
+        component.flipHorizontally();
+      }
+    }
     if (component == currentComponent) return;
     remove(currentComponent);
     currentComponent = component;
     add(component);
+  }
+
+  void walkLeft() {
+    accelerationX = -1;
+  }
+
+  void walkRight() {
+    accelerationX = 1;
+  }
+
+  void walkStop() {
+    accelerationX = 0;
   }
 
   void jump() {
@@ -71,12 +111,20 @@ class Robot extends BodyComponent {
     super.update(dt);
 
     final velocity = body.linearVelocity;
+    velocity.x = accelerationX * 3;
+    body.linearVelocity = velocity;
+
     if (velocity.y > 0.1) {
       state = RobotState.fall;
       _setComponent(fallComponent);
     } else if (velocity.y < 0.1 && state != RobotState.jump) {
-      state = RobotState.idle;
-      _setComponent(idleComponent);
+      if (accelerationX != 0) {
+        state = RobotState.walk;
+        _setComponent(walkComponent);
+      } else {
+        state = RobotState.idle;
+        _setComponent(idleComponent);
+      }
     } else {
       _setComponent(jumpComponent);
     }
