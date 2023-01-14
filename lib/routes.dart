@@ -5,6 +5,7 @@ import 'package:flutter_learn_flame_jump_game/lesson_03/game_lesson_03.dart';
 import 'package:flutter_learn_flame_jump_game/lesson_04/game_lesson_04.dart';
 import 'package:flutter_learn_flame_jump_game/lesson_06/game_lesson_06.dart';
 import 'package:flutter_learn_flame_jump_game/lesson_07/game_lesson_07.dart';
+import 'package:flutter_learn_flame_jump_game/lesson_08/game_lesson_08.dart';
 import 'package:flutter_learn_flame_jump_game/lesson_menu.dart';
 import 'package:flutter_learn_flame_jump_game/my_game.dart';
 
@@ -19,6 +20,7 @@ class Routes {
   static const lesson05 = '/lesson05';
   static const lesson06 = '/lesson06';
   static const lesson07 = '/lesson07';
+  static const lesson08 = '/lesson08';
 
   static Route routes(RouteSettings settings) {
     MaterialPageRoute buildRoute(Widget widget) {
@@ -42,6 +44,8 @@ class Routes {
         return buildRoute(MyGameWidget(game: GameLesson06()));
       case lesson07:
         return buildRoute(MyGameWidget(game: GameLesson07()));
+      case lesson08:
+        return buildRoute(MyGameWidget(game: GameLesson08()));
       default:
         throw Exception('Route does not exists');
     }

@@ -65,6 +65,7 @@ flutter:
   assets:
     - assets/images/
     - assets/images/explosion/
+    - assets/images/robot/
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
