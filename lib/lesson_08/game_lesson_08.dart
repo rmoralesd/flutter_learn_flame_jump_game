@@ -28,8 +28,10 @@ class GameLesson08 extends MyGame {
       robot.walkLeft();
     } else if (keysPressed.contains(LogicalKeyboardKey.keyD)) {
       robot.walkRight();
+    } else if (keysPressed.contains(LogicalKeyboardKey.keyS)) {
+      robot.duck();
     } else {
-      robot.walkStop();
+      robot.idle();
     }
     return KeyEventResult.handled;
   }

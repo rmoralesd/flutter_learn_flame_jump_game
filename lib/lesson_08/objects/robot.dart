@@ -2,7 +2,13 @@ import 'package:flame/components.dart';
 import 'package:flame_forge2d/flame_forge2d.dart';
 import 'package:flutter_learn_flame_jump_game/my_game.dart';
 
-enum RobotState { idle, jump, fall, walk }
+enum RobotState {
+  idle,
+  jump,
+  fall,
+  walk,
+  duck,
+}
 
 class Robot extends BodyComponent {
   final _size = Vector2(1.80, 2.4);
@@ -12,11 +18,13 @@ class Robot extends BodyComponent {
   late final SpriteComponent idleComponent;
   late final SpriteComponent jumpComponent;
   late final SpriteComponent fallComponent;
+  late final SpriteComponent duckComponent;
   late final SpriteAnimationComponent walkComponent;
 
   late Component currentComponent;
 
   int accelerationX = 0;
+  bool isDucking = false;
 
   Future<List<Sprite>> _loadSprites(String baseName, int n) async {
     final List<Sprite> listOfsprites = [];
@@ -29,9 +37,12 @@ class Robot extends BodyComponent {
   @override
   Future<void> onLoad() async {
     await super.onLoad();
+    renderBody = false;
+
     final idle = await gameRef.loadSprite('robot/robot_idle.png');
     final jump = await gameRef.loadSprite('robot/robot_jump.png');
     final fall = await gameRef.loadSprite('robot/robot_fall.png');
+    final duck = await gameRef.loadSprite('robot/robot_duck.png');
     final walk = await _loadSprites('robot_walk', 7);
 
     idleComponent = SpriteComponent(
@@ -50,6 +61,13 @@ class Robot extends BodyComponent {
 
     fallComponent = SpriteComponent(
       sprite: fall,
+      size: _size,
+      position: _componentPosition,
+      anchor: Anchor.center,
+    );
+
+    duckComponent = SpriteComponent(
+      sprite: duck,
       size: _size,
       position: _componentPosition,
       anchor: Anchor.center,
@@ -95,7 +113,13 @@ class Robot extends BodyComponent {
     accelerationX = 1;
   }
 
-  void walkStop() {
+  void idle() {
+    accelerationX = 0;
+    isDucking = false;
+  }
+
+  void duck() {
+    isDucking = true;
     accelerationX = 0;
   }
 
@@ -121,11 +145,14 @@ class Robot extends BodyComponent {
       if (accelerationX != 0) {
         state = RobotState.walk;
         _setComponent(walkComponent);
+      } else if (isDucking) {
+        state = RobotState.duck;
+        _setComponent(duckComponent);
       } else {
         state = RobotState.idle;
         _setComponent(idleComponent);
       }
-    } else {
+    } else if (state == RobotState.jump) {
       _setComponent(jumpComponent);
     }
 
